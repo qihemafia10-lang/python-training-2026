@@ -1,0 +1,36 @@
+# Word Frequency Counter
+
+passage = input("Enter a passage:\n")
+
+# Convert to lowercase and split into words
+words = passage.lower().split()
+
+# Count word frequencies
+frequency = {}
+
+for word in words:
+    word = word.strip(".,!?;:()[]{}\"'")
+    
+    if word in frequency:
+        frequency[word] += 1
+    else:
+        frequency[word] = 1
+
+# Display all frequencies
+print("\nWord Frequencies:")
+for word, count in frequency.items():
+    print(word, ":", count)
+
+# Sort by frequency in descending order
+top_words = sorted(
+    frequency.items(),
+    key=lambda x: x[1],
+    reverse=True
+)
+
+# Top 5 words using list comprehension
+top_5 = [(word, count) for word, count in top_words[:5]]
+
+print("\nTop 5 Most Frequent Words:")
+for word, count in top_5:
+    print(word, "->", count)

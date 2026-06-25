@@ -1,0 +1,100 @@
+# Base Class
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def display_role(self):
+        print("Person")
+
+    def __str__(self):
+        return self.name
+
+
+# Student Class
+class Student(Person):
+    def __init__(self, name, roll_no, marks):
+        super().__init__(name)
+        self.roll_no = roll_no
+        self.marks = marks
+
+    def display_role(self):
+        print("Student")
+
+    def calculate_grade(self):
+        if self.marks >= 90:
+            return "A+"
+        elif self.marks >= 80:
+            return "A"
+        elif self.marks >= 70:
+            return "B"
+        elif self.marks >= 60:
+            return "C"
+        else:
+            return "F"
+
+    def __str__(self):
+        return f"Student,{self.name},{self.roll_no},{self.marks},{self.calculate_grade()}"
+
+
+# Teacher Class
+class Teacher(Person):
+    def __init__(self, name, subject):
+        super().__init__(name)
+        self.subject = subject
+
+    def display_role(self):
+        print("Teacher")
+
+    def __str__(self):
+        return f"Teacher,{self.name},{self.subject}"
+
+
+# Course Class
+class Course:
+    def __init__(self, course_name):
+        self.course_name = course_name
+
+    def __str__(self):
+        return f"Course,{self.course_name}"
+
+
+# Save Record to File
+def save_record(obj):
+    with open("records.txt", "a") as file:
+        file.write(str(obj) + "\n")
+
+
+# Display Records
+def display_records():
+    try:
+        with open("records.txt", "r") as file:
+            print("\n----- Records -----")
+            for line in file:
+                print(line.strip())
+
+    except FileNotFoundError:
+        print("No records found!")
+
+
+# Creating Objects
+s1 = Student("Mohit", 101, 88)
+s2 = Student("Rahul", 102, 95)
+
+t1 = Teacher("Sharma Sir", "Python")
+
+c1 = Course("Python Programming")
+
+# Polymorphism
+people = [s1, s2, t1]
+
+for person in people:
+    person.display_role()
+
+# Save to File
+save_record(s1)
+save_record(s2)
+save_record(t1)
+save_record(c1)
+
+# Retrieve and Display Records
+display_records()

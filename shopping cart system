@@ -1,0 +1,82 @@
+# Shopping Cart System
+
+cart = []
+categories = set()
+
+items = {
+    "Milk": 60,
+    "Bread": 40,
+    "Eggs": 80,
+    "Rice": 120,
+    "Apple": 100
+}
+
+item_categories = {
+    "Milk": "Dairy",
+    "Bread": "Bakery",
+    "Eggs": "Dairy",
+    "Rice": "Grocery",
+    "Apple": "Fruits"
+}
+
+while True:
+    print("\n===== SHOPPING CART =====")
+    print("1. Add Item")
+    print("2. Remove Item")
+    print("3. View Cart")
+    print("4. Calculate Bill")
+    print("5. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        item = input("Enter item name: ")
+
+        if item in items:
+            cart.append(item)
+            categories.add(item_categories[item])
+            print(item, "added to cart.")
+        else:
+            print("Item not available!")
+
+    elif choice == "2":
+        item = input("Enter item to remove: ")
+
+        if item in cart:
+            cart.remove(item)
+            print(item, "removed from cart.")
+
+            # Update categories
+            categories.clear()
+            for i in cart:
+                categories.add(item_categories[i])
+        else:
+            print("Item not found in cart!")
+
+    elif choice == "3":
+        print("\nItems in Cart:")
+        if cart:
+            for item in cart:
+                print(item, "- ₹", items[item])
+
+            print("Unique Categories:", categories)
+        else:
+            print("Cart is empty!")
+
+    elif choice == "4":
+        total = 0
+        for item in cart:
+            total += items[item]
+
+        print("\n===== BILL =====")
+        for item in cart:
+            print(item, "- ₹", items[item])
+
+        print("Total Bill = ₹", total)
+
+    elif choice == "5":
+        print("Thank you for shopping!")
+        break
+
+    else:
+        print("Invalid choice!")

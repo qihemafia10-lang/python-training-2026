@@ -1,0 +1,46 @@
+import csv
+
+# Function to calculate grade
+def calculate_grade(marks):
+    if marks >= 90:
+        return "A+"
+    elif marks >= 80:
+        return "A"
+    elif marks >= 70:
+        return "B"
+    elif marks >= 60:
+        return "C"
+    elif marks >= 50:
+        return "D"
+    else:
+        return "F"
+
+input_file = "students.csv"
+output_file = "results.csv"
+
+try:
+    with open(input_file, "r", newline="") as infile, \
+         open(output_file, "w", newline="") as outfile:
+
+        reader = csv.reader(infile)
+        writer = csv.writer(outfile)
+
+        # Header
+        writer.writerow(["Roll No", "Name", "Marks", "Grade"])
+
+        for row in reader:
+            roll_no = row[0]
+            name = row[1]
+            marks = int(row[2])
+
+            grade = calculate_grade(marks)
+
+            writer.writerow([roll_no, name, marks, grade])
+
+    print("Results generated successfully!")
+    print("Data saved in", output_file)
+
+except FileNotFoundError:
+    print("Input file not found!")
+except ValueError:
+    print("Invalid marks found in file!")

@@ -1,0 +1,71 @@
+# Decorator to log salary calculations
+def salary_logger(func):
+    def wrapper(self):
+        salary = func(self)
+        print(f"[LOG] Salary calculated for {self.name}: ₹{salary}")
+        return salary
+    return wrapper
+
+
+# Base Class
+class Employee:
+    def __init__(self, emp_id, name):
+        self.emp_id = emp_id
+        self.name = name
+
+    def calculate_salary(self):
+        pass
+
+
+# Full-Time Employee
+class FullTimeEmployee(Employee):
+    def __init__(self, emp_id, name, monthly_salary):
+        super().__init__(emp_id, name)
+        self.monthly_salary = monthly_salary
+
+    @salary_logger
+    def calculate_salary(self):
+        return self.monthly_salary
+
+
+# Part-Time Employee
+class PartTimeEmployee(Employee):
+    def __init__(self, emp_id, name, hours_worked, hourly_rate):
+        super().__init__(emp_id, name)
+        self.hours_worked = hours_worked
+        self.hourly_rate = hourly_rate
+
+    @salary_logger
+    def calculate_salary(self):
+        return self.hours_worked * self.hourly_rate
+
+
+# Export Payroll Data
+def export_payroll(employees):
+    with open("payroll.txt", "w") as file:
+        file.write("EMPLOYEE PAYROLL REPORT\n")
+        file.write("-" * 40 + "\n")
+
+        for emp in employees:
+            salary = emp.calculate_salary()
+            file.write(
+                f"ID: {emp.emp_id}, "
+                f"Name: {emp.name}, "
+                f"Salary: ₹{salary}\n"
+            )
+
+    print("\nPayroll exported to payroll.txt")
+
+
+# Main Program
+e1 = FullTimeEmployee(101, "Mohit", 50000)
+e2 = PartTimeEmployee(102, "Rahul", 80, 300)
+
+employees = [e1, e2]
+
+print("Employee Salaries:")
+for emp in employees:
+    print(emp.name, "-> ₹", emp.calculate_salary())
+
+# Export to file
+export_payroll(employees)

@@ -1,0 +1,80 @@
+import re
+
+# Base Class
+class Account:
+    def __init__(self, account_no, balance):
+        self.account_no = account_no
+        self.__balance = balance   # Private variable (Encapsulation)
+
+    # Getter
+    def get_balance(self):
+        return self.__balance
+
+    # Setter
+    def set_balance(self, balance):
+        self.__balance = balance
+
+    def deposit(self, amount):
+        self.__balance += amount
+        print(f"₹{amount} deposited successfully.")
+
+    def withdraw(self, amount):
+        if amount <= self.__balance:
+            self.__balance -= amount
+            print(f"₹{amount} withdrawn successfully.")
+        else:
+            print("Insufficient Balance!")
+
+    def display(self):
+        print("Account Number:", self.account_no)
+        print("Balance: ₹", self.__balance)
+
+
+# Child Class - Savings Account
+class SavingsAccount(Account):
+    def withdraw(self, amount):
+        if amount > self.get_balance():
+            print("Insufficient Balance in Savings Account!")
+        else:
+            self.set_balance(self.get_balance() - amount)
+            print(f"₹{amount} withdrawn from Savings Account.")
+
+
+# Child Class - Current Account
+class CurrentAccount(Account):
+    def withdraw(self, amount):
+        overdraft_limit = 5000
+
+        if amount <= self.get_balance() + overdraft_limit:
+            self.set_balance(self.get_balance() - amount)
+            print(f"₹{amount} withdrawn from Current Account.")
+        else:
+            print("Overdraft Limit Exceeded!")
+
+
+# Regex Validation Function
+def validate_account(account_no):
+    pattern = r"^\d{10}$"   # Exactly 10 digits
+    return bool(re.match(pattern, account_no))
+
+
+# Main Program
+acc_no = input("Enter 10-digit Account Number: ")
+
+if validate_account(acc_no):
+
+    savings = SavingsAccount(acc_no, 10000)
+    current = CurrentAccount("9876543210", 5000)
+
+    print("\n--- Savings Account ---")
+    savings.display()
+    savings.withdraw(3000)
+    savings.display()
+
+    print("\n--- Current Account ---")
+    current.display()
+    current.withdraw(8000)
+    current.display()
+
+else:
+    print("Invalid Account Number!")
